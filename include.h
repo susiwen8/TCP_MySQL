@@ -14,7 +14,8 @@
 #define N_CLIENTS 2
 #define CLEerr -100
 #define SEMerr -103
-#define WELCOME_MESSAGE "Welcome, what can I do for you\n1.Rebounding message\n2.DOwnload file\n"
+#define WELCOME_MESSAGE "Password correct!!!\n\nWelcome, what can I do for you\n1.Rebounding message\n2.DOwnload file\n"
+#define QUERY "select * from users where name="
 
 sem_t sem;
 pthread_mutex_t mutex;
@@ -26,9 +27,5 @@ void download(struct sockaddr_in serv_addr, int sock);
 void file(int clnt_sock);
 void *thread(void *p);
 void semaphore();
+char *mysql(char *id);
 
-typedef user_info
-{
-    char name[20];
-    char password[20];
-}USER_INFO;

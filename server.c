@@ -2,6 +2,10 @@
 
 int main()
 {
+    char request_name[] = "User name:";
+    char request_password[] = "Password:";
+    char frozen[] = "This account is frozen!!!!\n"; 
+    char warning[] = "Wrong Password!!!\n";
     //创建套接字
     //socket()函数确定了套接字的各种属性
     //AF_INET表示使用IPv4
@@ -28,6 +32,7 @@ int main()
     struct sockaddr_in clnt_addr;
     socklen_t clnt_addr_size = sizeof(clnt_addr);
     char id_client[BUF_SIZE] = {0};
+    char buffer[BUF_SIZE] = {0};
 
     while(1)
     {
@@ -38,17 +43,40 @@ int main()
         printf("\nClient %s has connected!\n", id_client);
         /* 连接数据库，看该客户是否有帐号, 若有要求客户输入密码，有三次机会，
          * 没有，询问是否需要创建账户，将账户名和密码添加到数据库*/
-
-        /*********************/
+        write(clnt_sock, request_name, sizeof(request_name));//询问用户名
+        read(clnt_sock, buffer, sizeof(buffer));//接收用户名
+        char *pw = mysql(buffer);//从MySQL中获取该用户的密码用来密码验证
+        memset(buffer, 0, sizeof(buffer));
         
-
-
-
+        write(clnt_sock, request_password, sizeof(request_password));//询问密码
+        int i = 0;
+        int count = 3;//有三次输入密码机会
+        while(i < 3)
+        {
+            read(clnt_sock, buffer, sizeof(buffer));//接收密码
+            count--;
+            if(0 == strcmp(pw, buffer))
+            {
+                char correct[] = WELCOME_MESSAGE;
+                write(clnt_sock, correct, sizeof(correct));//密码正确，跳出while循环
+                break;
+            }
+            else
+            {
+                if(0 == count)
+                {
+                    write(clnt_sock, frozen, sizeof(frozen));//三次密码都错误冻结账户
+                    /*****加入一个Python发邮件提醒程序****/
+                }
+                else
+                {
+                    write(clnt_sock, warning, sizeof(warning));//向客户端发送密码错误信息
+                }
+            }
+            i++;
+        }
+        
         memset(id_client, 0, sizeof(id_client));//清空id_client，理解为什么？？？
-        char buffer[BUF_SIZE] = {0};
-        //strcpy(buffer, "Welcome, what can I do for you\n1.Rebounding message\n2.Download file\n");
-        strcpy(buffer, WELCOME_MESSAGE);
-        write(clnt_sock, buffer, sizeof(buffer));//将操作信息传给client
         read(clnt_sock, operation, sizeof(operation));//接收client操作选项
         switch(atoi(operation))
         {
@@ -59,7 +87,6 @@ int main()
                     printf("\nClient has disconnected!\n");    
                     break;
                 }
-
             case 2:
                 {
                     printf("Client wants download file\n");
@@ -72,7 +99,6 @@ int main()
                 break;
         }
     }
-
     close(serv_sock);
     return 0;
 }
