@@ -24,16 +24,10 @@
 #define FAIL "Account create failed!!!\n"
 #define ENTRE_NAME "Entre user name:"
 
-sem_t sem;
-pthread_mutex_t mutex;
 
 void rebound(int clnt_sock);
 void sendFile(int clnt_sock);
-void sendMessage(struct sockaddr_in serv_addr, int sock);
-void download(struct sockaddr_in serv_addr, int sock);
 void file(int clnt_sock);
-void *thread(void *p);
-void semaphore();
 char *mysql(char *id, int clnt_sock);
 void code(int clnt_sock);
 void add_user(int clnt_sock, char *name, char *new_password);
