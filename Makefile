@@ -4,8 +4,8 @@ all : server client
 CC = gcc
 CFLAGS = -g -pthread -I /usr/include/mysql/ -lmysqlclient
 
-SOURCE_SERVER  = server.c code.c rebound.c sendFile.c mysql.c
-SOURCE_CLIENT  = client.c sendMessage.c download.c semaphore.c 
+SOURCE_SERVER  = server/server.c server/code.c server/rebound.c server/sendFile.c server/mysql.c
+SOURCE_CLIENT  = client/client.c client/sendMessage.c client/download.c client/semaphore.c 
 OBJECTS_SERVER = $(SOURCE_SERVER:.c = .o)
 OBJECTS_CLIENT = $(SOURCE_CLIENT:.c = .o)
 

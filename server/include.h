@@ -5,9 +5,6 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <sys/sem.h>
-#include <pthread.h>
-#include <semaphore.h>
 #include <mysql.h>
 
 #define BUF_SIZE 100
