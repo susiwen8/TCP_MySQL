@@ -1,18 +1,15 @@
 #include "include.h"
 
-#define FILE_PATH "/home/ssu/Downloads/"
-
 void sendFile(int clnt_sock)
 {
-    file(clnt_sock);
+    //file(clnt_sock);
+    get_download_list(clnt_sock);
     
     char fileName[BUF_SIZE] = {0};
     read(clnt_sock, fileName, BUF_SIZE);//接收并读取要下载的文件名
     printf("\nThe client wants to download %s\n", fileName);
-    char filePath[BUF_SIZE];
-    strcpy(filePath, FILE_PATH);//下载文件所在的文件夹
+    char *filePath = get_filePath(fileName);
     strcat(filePath, fileName);//下载文件的完整路径
-
     FILE *fp = fopen(filePath, "rb");
     if(fp == NULL)
     {
@@ -48,7 +45,7 @@ void file(int clnt_sock)
     int nCount;
     while((nCount = fread(buffer, 1, BUF_SIZE, fp)) > 0)
     {
-        printf("%s\n", buffer);
+//        printf("%s\n", buffer);
         write(clnt_sock, buffer, nCount);
     }
     fclose(fp);

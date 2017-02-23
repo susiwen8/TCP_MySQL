@@ -44,7 +44,7 @@ int main()
         if(0 == strcmp(yes_no, YES))//有帐号的情况
         {
             code(clnt_sock);//密码验证
-            memset(id_client, 0, sizeof(id_client));//理解为什么？？？
+        //    memset(id_client, 0, sizeof(id_client));//理解为什么？？？
             read(clnt_sock, operation, sizeof(operation));//接收client操作选项
             switch(atoi(operation))
             {
@@ -65,7 +65,6 @@ int main()
                 default:
                     break;
             }
-//            close(serv_sock);
         }
         else
         {
@@ -109,7 +108,6 @@ int main()
                 printf("Client doesn't want to create an account!!!\n");
                 exit(EXIT_FAILURE);
             }
-//           close(serv_sock);
         }
     }
     close(serv_sock);

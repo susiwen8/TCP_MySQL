@@ -8,10 +8,20 @@ void download(struct sockaddr_in serv_addr, int sock)
     int nCount;
     char filename[BUF_SIZE] = {0};//用来保存文件名
     char download[1] = {'2'};//操作符，告知服务器进行什么操作
-
     write(sock, download, sizeof(download));//将操作符发送给服务器
-    read(sock, bufRecv, BUF_SIZE);//接收从服务器反馈信息（可下载文件列表）
-    printf("\nThe list of file that you can download:\n%s\n", bufRecv);
+    read(sock, bufRecv, BUF_SIZE);//接收行数，以便之后的for循环
+    write(sock, bufRecv, BUF_SIZE);
+    int row = atoi(bufRecv);
+    int i;
+    printf("\nThe list of files\n");
+    for(i = 0; i < row; i++)
+    {
+        read(sock, bufRecv, BUF_SIZE);
+        printf("%d: %s\n", i + 1, bufRecv);
+        write(sock, bufRecv, BUF_SIZE);
+    }
+//    read(sock, bufRecv, BUF_SIZE);//接收从服务器反馈信息（可下载文件列表）
+//    printf("\nThe list of file that you can download:\n%s\n", bufRecv);
     printf("\nWhich file you want to download: ");
     scanf("%s", filename);
     write(sock, filename, sizeof(filename));//将想下载的文件名发给服务器

@@ -151,7 +151,6 @@ void *thread(void* p)
             }
             else//密码设置正确
             {
-//                memset(buffer, 0, sizeof(buffer));
                 read(sock, buffer, sizeof(buffer));//服务器报告密码设置成功
                 printf("%s", buffer);
                 write(sock, buffer, sizeof(buffer));//考虑如何去掉这行代码

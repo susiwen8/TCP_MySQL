@@ -12,7 +12,7 @@ void code(int clnt_sock)
      * 没有，询问是否需要创建账户，将账户名和密码添加到数据库*/
     write(clnt_sock, request_name, sizeof(request_name));//询问用户名
     read(clnt_sock, buffer, sizeof(buffer));//接收用户名
-    char *pw = mysql(buffer, clnt_sock);//从MySQL中获取该用户的密码用来密码验证
+    char *pw = get_password_from_mysql(buffer, clnt_sock);//从MySQL中获取该用户的密码用来密码验证
     memset(buffer, 0, sizeof(buffer));
         
     write(clnt_sock, request_password, sizeof(request_password));//询问密码
